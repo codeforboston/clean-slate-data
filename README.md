@@ -4,15 +4,13 @@
 
 _Expungement with Citizens for Juvenile Justice, Code for Boston, and legal aid services._
 
-**Expungement:** "Having a criminal record expunged means that the record will be permanently destroyed so that it's no longer accessible by the court or any other state, municipal, or county agencies."
-
-- https://www.mass.gov/expunge-your-criminal-record
+**Expungement:** "Having a criminal record expunged means that the record will be permanently destroyed so that it's no longer accessible by the court or any other state, municipal, or county agencies." - https://www.mass.gov/expunge-your-criminal-record
 
 _Note: Expungement is different than sealing_
 
 ## What’s Wrong
 
-If you ever got convicted of a crime, even if it turns out someone made a mistake, you’ll have a criminal record. Anyone that does a background check, like an employer, sees that you have a criminal record and that’s it. You lose out.
+If you ever got convicted of a crime or arraigned, even if it turns out someone made a mistake, you’ll have a criminal record. Anyone that does a background check, like an employer, sees that you have a criminal record and that’s the end of it. You lose out.
 
 **Even something false or small can stop you from getting honest work, housing, education, and other opportunities.**
 
@@ -27,7 +25,7 @@ We need members of the community, legal professionals, community advocates, proj
 ## Get Involved
 
 - Join the [Code for Boston slack](https://communityinviter.com/apps/cfb-public/code-for-boston) and talk to us on the #clean-slate channel.
-- Contact us by [filling out our interest form](https://forms.gle/FZrBfNjC6JNtsQXP7)!
+- Contact us by [filling out our interest form](https://forms.gle/FZrBfNjC6JNtsQXP7).
 - Look at what we’ve done so far - we’re collecting what we learn in shared folders and some separate repositories. See our [shared folders](https://drive.google.com/drive/folders/1EiEt97817QzZNip9X5yrsXAdPCqUdF0M?usp=sharing) to see a little of that chaos.
 
 ## Our Goals
