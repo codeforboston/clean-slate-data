@@ -29,7 +29,7 @@ We need members of the community, legal professionals, community advocates, proj
 - Look at what we’ve done so far - we’re collecting what we learn in shared folders and some separate repositories.
   - Our [shared folders](https://drive.google.com/drive/folders/1EiEt97817QzZNip9X5yrsXAdPCqUdF0M?usp=sharing).
   - This repo's [wiki](https://github.com/codeforboston/clean-slate/wiki), which contains notes on the policy impact data analysis efforts.
-  - An online [juvenile sealing form](https://github.com/knod/docassemble-juvenilesealing) that's currently under development.
+  - An online [juvenile sealing app](https://github.com/knod/docassemble-juvenilesealing) that's currently under development.
 
 ## Our Goals
 
