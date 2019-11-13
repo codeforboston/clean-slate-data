@@ -7,4 +7,4 @@ This is where that lives! All the code of your analyses and outputs should exist
 Current folders in here include:
 
 * [Notebooks](notebooks) holds all single file projects that don't need their own folder
-* [Data expungement](data expungement) contains the initial analysis that we used to determine PA was the best proxy for MA crime, using 2014 FBI data.
+* [Data expungement](data-expungement) contains the initial analysis that we used to determine PA was the best proxy for MA crime, using 2014 FBI data.
