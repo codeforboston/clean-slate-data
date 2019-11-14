@@ -1,6 +1,9 @@
-# Do you know what I do?
+# Data
 
-We're pulling together all sorts of different code and analyses into this 
-repo, and our documentation is falling a bit behind in that effort. If 
-you know what I do, please feel free to open a pull request and update this 
-readme with that info!
+This folder contains all datasets used in the process of this project. Specifically, datasets have been broken out here into the following groups:
+
+* [Raw data](raw) contains datasets in the format we obtained them in -- errors have not been fixed, holes have not been patched, and here there be dragons.
+* [Cleaned data](cleaned) contains datasets that have been cleaned of errors and is now ready to be wrangled as needed for analyses.
+* [Processed data](processed) contains datasets in the format needed for a specific analysis.
+
+Each of these folders should also contain the scripts used to create the data included. 
