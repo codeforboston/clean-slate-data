@@ -29,7 +29,8 @@ FBIData %>% ## states and populations are only listed once across the two rows
                                        estimated_population),
          number_of_agencies = ifelse(is.na(number_of_agencies), 
                                      lag(number_of_agencies, 1),
-                                     number_of_agencies)) %>%
+                                     number_of_agencies),
+         year = 2018) %>%
   head(-9) %>% ## last nine rows are footnotes
   write.xlsx("2018_FBI_aggregate_crime_data.xls")
 ```
