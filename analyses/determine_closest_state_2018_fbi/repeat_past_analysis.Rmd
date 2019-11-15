@@ -18,7 +18,14 @@ The first thing that was done with the 2014 data was to calculate the euclidian 
 nestedFBIData <- FBIData %>%
   filter(age_category == "Under 18") %>%
   ## these variables are the same ones done with 2014 data
-  select(state, year, robbery, property_crime, burglary, larceny_theft, motor_vehicle_theft, estimated_population) %>%
+  select(state, 
+         year, 
+         robbery, 
+         property_crime, 
+         burglary, 
+         larceny_theft, 
+         motor_vehicle_theft, 
+         estimated_population) %>%
   ## get per-capita crime rate
   mutate_if(is.numeric, funs(. / estimated_population)) %>%
   select(-estimated_population) %>%
@@ -31,8 +38,10 @@ nestedFBIData <- FBIData %>%
 ## iterate across each state, combining its dataframe with the MA one;
 ## create a list of those dataframes in "frames"
 frames <- vector("list")
-for (i in seq_along(nestedFBIData$state)) { 
-  frames[i] <- nest(data = everything(), rbind(nestedFBIData[[i, "other_states"]], nestedFBIData[nestedFBIData$state == "Massachusetts", ][[2]][[1]]))
+for (i in seq_along(nestedFBIData$state)) {
+  frames[i] <- nest(data = everything(), 
+                    rbind(nestedFBIData[[i, "other_states"]], 
+                          nestedFBIData[nestedFBIData$state == "Massachusetts", ][[2]][[1]]))
 }
 
 ## now iterate through those dataframes calulating euclidian distance
@@ -44,7 +53,7 @@ for (i in seq_along(frames)) {
 ## now let's label those scores and examine the results!
 as_tibble(cbind(nestedFBIData$state, distScore)) %>%
   arrange(distScore) %>%
-  rename(State = V1) 
+  rename(State = V1)
 ```
 
 So PA in this quick experiment comes in 10th place (if you count MA as 1st; which is... a choice) -- which is still 80th percentile, but I'm wondering if we had pragmatic considerations for selecting PA in addition to distance-based ones. I think that, unless it turns out that New Jersey publishes all their crimes in a Google Spreadsheet emailed to everyone on New Year's, we can still justify looking at PA with this result -- the distinction between any top 10 state other than NJ and maybe Kentucky is extremely minimal.
@@ -53,8 +62,15 @@ Of course, the last analysis standardized the variables we looked at as well, so
 ```{r}
 nestedFBIData <- FBIData %>%
   filter(age_category == "Under 18" &
-           state != "Iowa") %>%
-  select(state, year, robbery, property_crime, burglary, larceny_theft, motor_vehicle_theft, estimated_population) %>%
+    state != "Iowa") %>%
+  select(state, 
+         year, 
+         robbery, 
+         property_crime, 
+         burglary, 
+         larceny_theft, 
+         motor_vehicle_theft, 
+         estimated_population) %>%
   mutate_if(is.numeric, funs(. / estimated_population)) %>%
   mutate_if(is.numeric, scale) %>%
   select(-estimated_population) %>%
@@ -62,8 +78,10 @@ nestedFBIData <- FBIData %>%
   rename(other_states = data)
 
 frames <- vector("list")
-for (i in seq_along(nestedFBIData$state)) { 
-  frames[i] <- nest(data = everything(), rbind(nestedFBIData[[i, "other_states"]], nestedFBIData[nestedFBIData$state == "Massachusetts", ][[2]][[1]]))
+for (i in seq_along(nestedFBIData$state)) {
+  frames[i] <- nest(data = everything(), 
+                    rbind(nestedFBIData[[i, "other_states"]], 
+                          nestedFBIData[nestedFBIData$state == "Massachusetts", ][[2]][[1]]))
 }
 
 ## now iterate through those dataframes calulating euclidian distance
@@ -75,7 +93,7 @@ for (i in seq_along(frames)) {
 ## now let's label those scores and examine the results!
 as_tibble(cbind(nestedFBIData$state, distScore)) %>%
   arrange(distScore) %>%
-  rename(State = V1) 
+  rename(State = V1)
 
 as_tibble(cbind(nestedFBIData$state, distScore)) %>%
   arrange(distScore) %>%
