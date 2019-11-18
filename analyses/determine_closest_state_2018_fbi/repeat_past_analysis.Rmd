@@ -1,6 +1,7 @@
 ---
 output: pdf_document
 ---
+This script repeats the analyses used to initially select PA as a proxy for MA crime rates, substituting the 2014 data used in the original script with new data from 2018. To do so, we calculate Euclidian distance between two-state (MA & all 50 others (inc. DC)) matrices, using both standardized and raw rates of crime.
 
 So first things first, let's load our libraries and data:
 ```{r}

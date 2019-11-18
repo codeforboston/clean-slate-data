@@ -1,4 +1,4 @@
-This script cleans the FBI 2018 crimes dataset, fixing column names and blank cells.
+This script cleans the FBI 2018 crimes dataset, fixing column names and blank cells. It takes as input data/raw/2018_FBI_aggregate_crime_data.xls and returns data/cleaned/fbi_aggregated_2018/2018_FBI_aggregrate_crime_data.xls (which I manually saved into a .xlsx for compatibility reasons with another script)
 ```{r}
 library(here) ## Provides relative pathway functionalities
 library(readxl) ## read .xlsx
