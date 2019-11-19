@@ -52,9 +52,10 @@ for (i in seq_along(frames)) {
   distScore[i] <- dist(frames[[i]][[1]])
 }
 ## now let's label those scores and examine the results!
-as_tibble(cbind(nestedFBIData$state, distScore)) %>%
+distScores <- as_tibble(cbind(nestedFBIData$state, distScore)) %>%
   arrange(distScore) %>%
   rename(State = V1)
+distScores
 ```
 
 So PA in this quick experiment comes in 10th place (if you count MA as 1st; which is... a choice) -- which is still 80th percentile, but I'm wondering if we had pragmatic considerations for selecting PA in addition to distance-based ones. I think that, unless it turns out that New Jersey publishes all their crimes in a Google Spreadsheet emailed to everyone on New Year's, we can still justify looking at PA with this result -- the distinction between any top 10 state other than NJ and maybe Kentucky is extremely minimal.
@@ -87,19 +88,32 @@ for (i in seq_along(nestedFBIData$state)) {
 
 ## now iterate through those dataframes calulating euclidian distance
 ## (same metric as last time)
-distScore <- vector()
+distScoreStand <- vector()
 for (i in seq_along(frames)) {
-  distScore[i] <- dist(frames[[i]][[1]])
+  distScoreStand[i] <- dist(frames[[i]][[1]])
 }
 ## now let's label those scores and examine the results!
-as_tibble(cbind(nestedFBIData$state, distScore)) %>%
-  arrange(distScore) %>%
+standScores <- as_tibble(cbind(nestedFBIData$state, distScoreStand)) %>%
+  arrange(distScoreStand) %>%
   rename(State = V1)
 
-as_tibble(cbind(nestedFBIData$state, distScore)) %>%
-  arrange(distScore) %>%
-  rename(State = V1) %>%
+standScores
+
+standScores %>%
   tail(-10)
 ```
 
 PA now is number 12, down two spots. Notably, Vermont came from almost dead last to an undisputable second place here. Having Vermont and New Hampshire here makes an amount of sense to me -- those are extremely similar states, after all. I'll look forward to talking about this with people on Tuesday -- I'm not even clear myself on what this implies for our next steps.
+
+```{r}
+library(ggplot2)
+graphFrame <- distScores %>%
+  full_join(standScores) %>%
+  drop_na()
+
+graphFrame %>%
+  mutate(abb = setNames(state.abb, state.name)[State]) %>%
+  ggplot(aes(distScore, distScoreStand)) + 
+  geom_text(aes(label = abb))
+```
+
