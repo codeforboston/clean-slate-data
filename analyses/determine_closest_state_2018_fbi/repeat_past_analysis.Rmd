@@ -116,4 +116,3 @@ graphFrame %>%
   ggplot(aes(distScore, distScoreStand)) + 
   geom_text(aes(label = abb))
 ```
-
