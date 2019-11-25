@@ -1,6 +1,3 @@
-# Do you know what I do?
+# Documentation from External Sources
 
-We're pulling together all sorts of different code and analyses into this 
-repo, and our documentation is falling a bit behind in that effort. If 
-you know what I do, please feel free to open a pull request and update this 
-readme with that info!
+This folder holds all documentation that was not generated as a part of this project but rather pulled from other sources, be it infographics, academic research, or BuzzFeed articles. Files should note their source (preferably as part of the file name, though in the file itself is also acceptable). As with homegrown documentation, files here should primarily be supporting project documentation in the [wiki](https://github.com/codeforboston/clean-slate/wiki), not free-floating sources alone in a void.

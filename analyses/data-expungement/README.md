@@ -1,6 +1,5 @@
-# Do you know what I do?
+# Comparing FBI crime data between states to identify a proxy
 
-We're pulling together all sorts of different code and analyses into this 
-repo, and our documentation is falling a bit behind in that effort. If 
-you know what I do, please feel free to open a pull request and update this 
-readme with that info!
+This code examines the aggregated FBI crime data in order to determine what states have offenders with similar profiles to MA (which, due to privacy laws which are just _too dang good_, we cannot examine inidividual crimes for). This analysis lead us to scraping the PA court of common pleas system, as PA was found to have the most similar rates of offenses to MA.
+
+
