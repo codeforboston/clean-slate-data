@@ -26,7 +26,6 @@ cleanColnames <- function(x) {
 }
 for (i in seq_along(FBIData)) { 
   names(FBIData[[i]]) <- cleanColnames(names(FBIData[[i]]))
-  #names(FBIData[[i]])[2] <- "age_category"
 }
 
 FBIData <- FBIData$y2018 %>%
