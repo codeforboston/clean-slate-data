@@ -16,7 +16,7 @@ FBIData$y2014 <- read_excel("../../raw/2014_FBI_aggregate_crime_data.xls", skip 
 ## github:hrbrmstr/hrbrmstrmisc for the base of this function
 cleanColnames <- function(x) {
   x <- tolower(x)
-  x <- str_replace_all(x, "...2", "age_category")
+  x <- str_replace(x, "[:punct:][:punct:][:punct:]2", "age_category")
   x <- gsub("[[:space:][:punct:]]+", " ", x)
   x <- str_remove_all(x, "\\d") ## this dataset is only 2018, so I remove
   ## the "2018" from the population estimate variable name alongside footnotes 
@@ -26,7 +26,6 @@ cleanColnames <- function(x) {
 }
 for (i in seq_along(FBIData)) { 
   names(FBIData[[i]]) <- cleanColnames(names(FBIData[[i]]))
-  #names(FBIData[[i]])[2] <- "age_category"
 }
 
 FBIData <- FBIData$y2018 %>%

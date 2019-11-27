@@ -8,3 +8,4 @@ Current folders in here include:
 
 * [Notebooks](notebooks) holds all single file projects that don't need their own folder
 * [Data expungement](data-expungement) contains the initial analysis that we used to determine PA was the best proxy for MA crime, using 2014 FBI data.
+* [determine_closest_state_2018_fbi](determine_closest_state_2018_fbi) and [determine_closest_state_2014_2018_fbi](determine_closest_state_fb_2014_2018) are two parallel analyses, looking to leverage aggregate FBI arrest records to determine appropriate proxies for MA crime rates.	
