@@ -1,0 +1,104 @@
+Multi-State Conference Call 04/25/19
+
+Attendees
+Matthew
+MD Creator of Maryland Expungement (MD Expungement)
+Currently at Harvard
+Nate
+PA
+Maintainer of CLS Expungement Generator
+Director of Law and Tech
+Pauline Quirion
+Greater Boston Legal Services
+Sana
+CfJJ
+Quinten
+GBLS
+Michelle
+CfB
+Terms
+Pro se = not lawyers
+MA Process
+We need more specific info about all the ways you can get CORIs
+Who can get them with what procedure?
+How are they given digital? Physical?
+CLS Expungement Generator - Nate
+Audience & Deployment
+Attorneys
+Technology
+Website
+Scrapes client info from gov website
+Development
+Matthew Hollander was developer
+Didn't originally scrape dockets. First had to get the docs themselves and... scan them in? Something like that.
+Don't recall. Assuming developed with attorneys.
+Attempted simpler form, but decided questions were too complex
+Pointers to Adjacent Work
+Privacy
+logins, passwords
+otherwise same as MD
+Keep [some?] data for analysis
+Store whole expungement data maybe?
+Don't store forms generated
+'Should expunge?'
+Similar disclaimer stuff as MD Expungement
+Juvenile records
+Doesn't deal with juvenile records. Getting info is harder. Process of expungement is harder.
+State
+Misc
+Score boards of how many expungement each attorney has completed create friendly competition
+MD Expungement - Matt
+Audience & Deployment
+Accessible to anyone
+Mostly used by attorneys
+Lots of free expungement clinics were set up in MD
+Technology
+Also scrapes CORI data
+Website
+Chrome extension that accesses cases from gov website (does the website version not allow access to gov records?)
+Can expunge in bulk
+Users can have accounts
+Development
+Developed side-by-side with attorneys
+No discovery or beta testing for lay people
+Making for attorneys first is more simple
+Pointers to Adjacent Work
+Links to email application for assistance to lawyers (using scraped record)
+Privacy
+long term: store case number, but not anything else (to identify how many cases were attempted and how many were successful. Don't purge those.)
+store whole record [I think it was temporarily before filing]
+temp storage on server side as program analyzes
+records are all public records anyway
+Case number, attorney, what forms they printed, outcomes
+Don't store forms generated
+'Should expunge?'
+One or two-line to warn about should expunge. Assumes some level of knowledge about the laws.
+Juvenile records
+Doesn't deal with juvenile records. Getting info is harder. Process of expungement is harder.
+State
+Not worried about being hacked to change records.
+Records were public. No fear of info being hacked and easy to show how tool could work with them.
+Don't want big downloadable files, though. [(the states don't or the project doesn't? And why?)]
+Expunge Maryland - Jason
+(not present. get in touch?)
+Jason Tuche (sp?)
+Really small completion rate
+Believes it was due to length of form.
+Had to answer questions that didn't know the answer to?
+Scary questions?
+Mobile friendly?
+Save progress?
+Too many clinics available to make the tool useful?
+CfB and CFJJ Comments
+Michelle: Making for attorneys 'first' may not be a useful way to discuss our about making something for lay people. A tool for lawyers and for lay people would need to be totally different. Lawyers would probably prefer technical Maybe we can find an elegant way to provide for both in one form, but we should remember that.
+Possible MA Audiences:
+Citizens
+Attorneys with access to digital records
+  Self-help centers in the courts (do they have computer systems that we could integrate with?)
+Quinten: if self-help center already has to deal with these forms, they may be interested in having a tool, otherwise not. They have a bank of six computers.
+Further Questions
+Numbers and figures on form completion from lay people
+What after-form follow-up did the tool do?
+Misc
+  Pittsburgh is looking to get a grant for a client-facing tool. Get in touch?
+

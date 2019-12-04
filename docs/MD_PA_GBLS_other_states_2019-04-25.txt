@@ -1,0 +1,67 @@
+Matt Stutenberg – Maryland (MDExpunge)
+Nate – Pennsylvania
+Quinten and Pauline – GBLS
+Michelle – code for Boston
+April 25, 2019
+
+Juvenile records easier to seal in MA
+Two tools in Maryland:
+ExpungeMaryland self-screener tool but horrible completion rate
+MDExpungement – started client facing, and can still be client facing, but geared towards attys
+In MD so many free record clearance clinics, that it’s easier to stand in line for 2 hours and get help
+rather than do it yourself
+ExpungeMaryland – branch logic – conclusion – needs to be 3 questions:
+ Answer questions that they don’t know the answer too
+ Too many questions
+ &gt;5 minutes
+ Terminology was too complicated
+Disclaimer may have been too put off’ish
+User testing and discovery research:
+ If final product is self screener, needs lots of user research
+ Auto form – questions won’t be needed
+ MA can get their own acct digitally if they set up their own acct.
+PA have online publicly accessible records
+MA – can search for records if you have the docket number – there is a special acct for attorneys – two
+databases (probation is more accurate, the masscourts records is not complete)
+MD built tool to be pro se but vast users were attorneys so changed model to be atty-facing
+PA only for atty’s
+Need docket numbers for in-court sealing (non-convictions) if you don’t want to wait
+Mail in – only need PII not docket number – juvenile records
+Expungement under 21 – mail in
+Expungement – erroneous need docket number
+Individual can request their own CORI - $25 or can request waiver for &lt;125% FPL
+Snail mail process to get juvenile record
+Maryland – discovery working with attys to develop but not user testing (no funding)
+PAExpungement generator – Mike Hollander developer
+
+PA passed clean slate law leads to auto expungement and sealing – employment attys want to build a
+self-screener for the public to see if they are eligible for sealing and expungement. The conclusion is
+that it is too complicated because of the eligibility requirements, not only offense based but looks at the
+entire record.
+(some eligibility is based on degree of offense, but there were no degrees other than hand-written notes
+Pittsburgh legal aid have LOI to get funding for a self-screener (asked quinten for feedback)
+Goal –
+Quentin recommends tool for pro se
+Matt recommends tool for atty’s first
+Maryland self-help centers in courts
+Matt at Harvard and has experience advocating for the automation with govt agency
+Maryland – pro se user: can choose option to apply for help with legal services – website can email
+application for assistance – use web scrapper to pre-fill their application
+Nate built the record scraper for PA
+How handle – should you expunge? One line, maybe expungeable, because not have access to one
+thing that makes ineligible. You may not want to expunge if it is detrimental to a case, but not
+prominent. Assume atty’s who use the website know the detrimental effects of expungement.
+MD – two versions: (1) website and (2) chrome extension that can scrape records that the atty chose all
+at once and auto generate forms
+
+How do you handle privacy: MD and PA similar
+(1) long term – time stamps; (2) do not store expungement pdf’s of expungement forms; (3) temp
+stored on server side not client computer - clients don’t enter info because info is public; (4) atty user
+name and password
+Expungement – only store case numbers, atty name and what forms they printed out for analytics; don’t
+store dockets or generated forms: identify number of cases expunged; takes 6 months to expunge, and
+go back to see if the case was expunged.
+MD and PA doesn’t do juvenile records – getting records and expunging records are very hard
+MD juvenile records are auto sealed
+Success in atty’s compete with each other because there is a counter on the screen – gamifying process
+among attys
