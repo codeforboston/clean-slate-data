@@ -10,4 +10,4 @@ When adding data, please add your dataset to this readme with a quick blurb list
 
 |File / Folder|Description|
 |----|----|
-|[2018_FBI_aggregate_crime_data.xls](2018_FBI_aggregate_crime_data.xls) through [2014_FBI_aggregate_crime_data.xls](2014_FBI_aggregate_crime_data.xls)|Yearly editions of a dataset obtained from [a public website](https://ucr.fbi.gov/crime-in-the-u.s/2018/crime-in-the-u.s.-2018/tables/table-69) listing aggregated crime rates for a variety of crimes across each state.|
+|[2018_FBI_aggregate_crime_data.xls](2018_FBI_aggregate_crime_data.xls) through [2014_FBI_aggregate_crime_data.xls](2014_FBI_aggregate_crime_data.xls)|Yearly editions of a public dataset obtained from [the FBI's Uniform Crime Reporting (UCR) website](https://ucr.fbi.gov/crime-in-the-u.s/2018/crime-in-the-u.s.-2018/tables/table-69) listing aggregated crime rates for a variety of crimes across each state.|
