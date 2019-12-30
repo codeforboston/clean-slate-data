@@ -6,4 +6,4 @@ This is a good home for that code, then! Make sure your code is actually well do
 
 |Notebook|Description|
 |---|---|
-|[NIBRS_2018.ipynb](IBRS_2018.ipynb)|Summarize offenses in our NIBRS 2018 data and determine the percent of records eligible for expungement involving people 21 and younger.|
+|[NIBRS_2018.ipynb](NIBRS_2018.ipynb)|Summarize offenses in our NIBRS 2018 data and determine the percent of records eligible for expungement involving people 21 and younger.|
