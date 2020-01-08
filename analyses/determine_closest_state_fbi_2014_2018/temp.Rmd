@@ -1,6 +1,3 @@
----
-output: pdf_document
----
 This script repeats the analyses used to initially select PA as a proxy for MA crime rates, substituting the 2014 data used in the original script with new data from 2018. To do so, we calculate Euclidian distance between two-state (MA & all 50 others (inc. DC)) matrices, using both standardized and raw rates of crime.
 
 So first things first, let's load our libraries and data:
@@ -34,7 +31,6 @@ nestedFBIData <- FBIData %>%
   ## containing data for only that state
   nest(data = -c(state)) %>%
   rename(other_states = data)
-
 ## this is decidedly not the smartest way to do this, but:
 ## iterate across each state, combining its dataframe with the MA one;
 ## create a list of those dataframes in "frames"
@@ -44,7 +40,6 @@ for (i in seq_along(nestedFBIData$state)) {
                     rbind(nestedFBIData[[i, "other_states"]], 
                           nestedFBIData[nestedFBIData$state == "Massachusetts", ][[2]][[1]]))
 }
-
 ## now iterate through those dataframes calulating euclidian distance
 ## (same metric as last time)
 distScore <- vector()
@@ -78,14 +73,12 @@ nestedFBIData <- FBIData %>%
   select(-estimated_population) %>%
   nest(data = -c(state)) %>%
   rename(other_states = data)
-
 frames <- vector("list")
 for (i in seq_along(nestedFBIData$state)) {
   frames[i] <- nest(data = everything(), 
                     rbind(nestedFBIData[[i, "other_states"]], 
                           nestedFBIData[nestedFBIData$state == "Massachusetts", ][[2]][[1]]))
 }
-
 ## now iterate through those dataframes calulating euclidian distance
 ## (same metric as last time)
 distScoreStand <- vector()
@@ -96,9 +89,7 @@ for (i in seq_along(frames)) {
 standScores <- as_tibble(cbind(nestedFBIData$state, distScoreStand)) %>%
   arrange(distScoreStand) %>%
   rename(State = V1)
-
 standScores
-
 standScores %>%
   tail(-10)
 ```
@@ -107,28 +98,11 @@ PA now is number 12, down two spots. Notably, Vermont came from almost dead last
 
 ```{r}
 library(ggplot2)
-library(ggrepel)
-library(forcats)
 graphFrame <- distScores %>%
   full_join(standScores) %>%
   drop_na()
-
 graphFrame %>%
-  mutate(abb = setNames(state.name, state.name)[State]) %>%
-  mutate(distScore = as.numeric(distScore),
-         distScoreStand = as.numeric(distScoreStand),
-         abb = factor(abb, levels = c("Pennsylvania", "Kentucky", "New Jersey", "Virginia", "Ohio", "Michigan", state.name[!(state.name %in% c("Kentucky", "New Jersey", "Virginia", "Pennsylvania", "Ohio", "Michigan"))]))) %>%
+  mutate(abb = setNames(state.abb, state.name)[State]) %>%
   ggplot(aes(distScore, distScoreStand)) + 
-  geom_text_repel(aes(label = abb, color = abb), segment.colour = NA, show.legend = F) +
-  scale_color_manual(values = c(rep("black", 1), rep("grey90", 48))) +
-  scale_y_continuous(limits = c(0, 6.5),
-                     breaks = c(0, 6),
-                     labels = c("Most\nSimilar", "Least\nSimilar")) + 
-  scale_x_continuous(limits = c(0, 0.003),
-                     breaks = c(0, 0.0028),
-                     labels = c("Most Similar", "Least Similar")) +
-  theme_classic() %+replace%
-  theme() +
-  labs(x = "Similarity -- Most Common Offenses",
-       y = "Similarity -- All Offenses")
+  geom_text(aes(label = abb))
 ```
