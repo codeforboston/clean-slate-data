@@ -1,7 +1,7 @@
 ---
 output: pdf_document
 ---
-This script repeats the analyses used to initially select PA as a proxy for MA crime rates, substituting the 2014 data used in the original script with new data from 2018. To do so, we calculate Euclidian distance between two-state (MA & all 50 others (inc. DC)) matrices, using both standardized and raw rates of crime.
+We're looking to expand our proxy-state analysis to additional years, in order to make sure we're comfortable using PA as a proxy for MA crime. Here we're combining data from 2014-2018 (from what was usually known as table 69, aggregated arrest rates, save one year it was reported as table 2) and repeating our look at euclidian distance vs MA with both standardized and non-standardized variables.
 
 So first things first, let's load our libraries and data:
 ```{r}
@@ -11,10 +11,10 @@ library(readxl) ## reading excel
 library(dplyr) ## data manipulation
 library(tidyr) ## nesting dataframes
 library(purrr) ## map reduce functions
-FBIData <- read_excel("../../data/cleaned/fbi_aggregated_2018/2018_FBI_aggregate_crime_data.xlsx")
+FBIData <- read_excel(here("data", "cleaned", "fbi_aggregated_data_combined/FBI_aggregate_crime_data_2014_2018.xlsx"))
 ```
 
-The first thing that was done with the 2014 data was to calculate the euclidian distance between each state and Massachusetts. Now, we're using a different data source altogether here, so I have to take a bit of a different approach in my wrangling -- most importantly, I have to calculate the per-capita arrest rate myself (I'm assuming these numbers aren't per capita or 100k based on California reporting about 1 million arrests for its 40 million population).
+Now we're repeating the same analysis done in the other FBI folder here, but nesting across state and year (so we'll compare each each state in 2018 to MA 2018). 
 ```{r}
 nestedFBIData <- FBIData %>%
   filter(age_category == "Under 18") %>%
@@ -27,12 +27,13 @@ nestedFBIData <- FBIData %>%
          larceny_theft, 
          motor_vehicle_theft, 
          estimated_population) %>%
+  mutate(year = as.character(year)) %>%
   ## get per-capita crime rate
   mutate_if(is.numeric, funs(. / estimated_population)) %>%
   select(-estimated_population) %>%
   ## this bit is wonky if you don't know R; I'm creating a column of dataframes
   ## containing data for only that state
-  nest(data = -c(state)) %>%
+  nest(data = -c(state, year)) %>%
   rename(other_states = data)
 
 ## this is decidedly not the smartest way to do this, but:
@@ -40,9 +41,12 @@ nestedFBIData <- FBIData %>%
 ## create a list of those dataframes in "frames"
 frames <- vector("list")
 for (i in seq_along(nestedFBIData$state)) {
-  frames[i] <- nest(data = everything(), 
+  yr <- nestedFBIData[[i, "year"]]
+  st <- nestedFBIData[[i, "state"]]
+  frames[i][1] <- nest(data = everything(), 
                     rbind(nestedFBIData[[i, "other_states"]], 
-                          nestedFBIData[nestedFBIData$state == "Massachusetts", ][[2]][[1]]))
+                          nestedFBIData[nestedFBIData$state == "Massachusetts" & nestedFBIData$year == yr, ][[3]][[1]]))
+  
 }
 
 ## now iterate through those dataframes calulating euclidian distance
@@ -52,10 +56,13 @@ for (i in seq_along(frames)) {
   distScore[i] <- dist(frames[[i]][[1]])
 }
 ## now let's label those scores and examine the results!
-distScores <- as_tibble(cbind(nestedFBIData$state, distScore)) %>%
+distScores <- as_tibble(cbind(nestedFBIData$state, nestedFBIData$year, distScore)) %>%
   arrange(distScore) %>%
-  rename(State = V1)
-distScores
+  rename(State = V1,
+         Year = V2)
+FBIData %>%
+  filter(state == "Pennsylvania" & 
+           year == 2018) 
 ```
 
 So PA in this quick experiment comes in 10th place (if you count MA as 1st; which is... a choice) -- which is still 80th percentile, but I'm wondering if we had pragmatic considerations for selecting PA in addition to distance-based ones. I think that, unless it turns out that New Jersey publishes all their crimes in a Google Spreadsheet emailed to everyone on New Year's, we can still justify looking at PA with this result -- the distinction between any top 10 state other than NJ and maybe Kentucky is extremely minimal.
@@ -107,28 +114,12 @@ PA now is number 12, down two spots. Notably, Vermont came from almost dead last
 
 ```{r}
 library(ggplot2)
-library(ggrepel)
-library(forcats)
 graphFrame <- distScores %>%
   full_join(standScores) %>%
   drop_na()
 
 graphFrame %>%
-  mutate(abb = setNames(state.name, state.name)[State]) %>%
-  mutate(distScore = as.numeric(distScore),
-         distScoreStand = as.numeric(distScoreStand),
-         abb = factor(abb, levels = c("Pennsylvania", "Kentucky", "New Jersey", "Virginia", "Ohio", "Michigan", state.name[!(state.name %in% c("Kentucky", "New Jersey", "Virginia", "Pennsylvania", "Ohio", "Michigan"))]))) %>%
+  mutate(abb = setNames(state.abb, state.name)[State]) %>%
   ggplot(aes(distScore, distScoreStand)) + 
-  geom_text_repel(aes(label = abb, color = abb), segment.colour = NA, show.legend = F) +
-  scale_color_manual(values = c(rep("black", 1), rep("grey90", 48))) +
-  scale_y_continuous(limits = c(0, 6.5),
-                     breaks = c(0, 6),
-                     labels = c("Most\nSimilar", "Least\nSimilar")) + 
-  scale_x_continuous(limits = c(0, 0.003),
-                     breaks = c(0, 0.0028),
-                     labels = c("Most Similar", "Least Similar")) +
-  theme_classic() %+replace%
-  theme() +
-  labs(x = "Similarity -- Most Common Offenses",
-       y = "Similarity -- All Offenses")
+  geom_text(aes(label = abb))
 ```
