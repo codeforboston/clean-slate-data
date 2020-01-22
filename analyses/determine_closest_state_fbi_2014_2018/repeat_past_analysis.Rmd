@@ -11,12 +11,23 @@ library(readxl) ## reading excel
 library(dplyr) ## data manipulation
 library(tidyr) ## nesting dataframes
 library(purrr) ## map reduce functions
-FBIData <- read_excel(here("data", "cleaned", "fbi_aggregated_data_combined/FBI_aggregate_crime_data_2014_2018.xlsx"))
+library(ggplot2)
+library(magrittr)
+fbi_data <- read_excel(
+  here(
+    "data", 
+    "cleaned", 
+    "fbi_aggregated_data_combined/FBI_aggregate_crime_data_2014_2018.xlsx"
+    )
+  )
 ```
 
-Now we're repeating the same analysis done in the other FBI folder here, but nesting across state and year (so we'll compare each each state in 2018 to MA 2018). 
+Now we're repeating the same analysis done in the other FBI folder here, 
+but nesting across state and year (so we'll compare each each state in 
+2018 to MA 2018). 
+
 ```{r}
-nestedFBIData <- FBIData %>%
+nested_fbi_data <- fbi_data %>%
   filter(age_category == "Under 18") %>%
   ## these variables are the same ones done with 2014 data
   select(state, 
@@ -33,45 +44,89 @@ nestedFBIData <- FBIData %>%
   select(-estimated_population) %>%
   ## this bit is wonky if you don't know R; I'm creating a column of dataframes
   ## containing data for only that state
-  nest(data = -c(state, year)) %>%
-  rename(other_states = data)
-
-## this is decidedly not the smartest way to do this, but:
-## iterate across each state, combining its dataframe with the MA one;
-## create a list of those dataframes in "frames"
-frames <- vector("list")
-for (i in seq_along(nestedFBIData$state)) {
-  yr <- nestedFBIData[[i, "year"]]
-  st <- nestedFBIData[[i, "state"]]
-  frames[i][1] <- nest(data = everything(), 
-                    rbind(nestedFBIData[[i, "other_states"]], 
-                          nestedFBIData[nestedFBIData$state == "Massachusetts" & nestedFBIData$year == yr, ][[3]][[1]]))
-  
-}
-
-## now iterate through those dataframes calulating euclidian distance
-## (same metric as last time)
-distScore <- vector()
-for (i in seq_along(frames)) {
-  distScore[i] <- dist(frames[[i]][[1]])
-}
-## now let's label those scores and examine the results!
-distScores <- as_tibble(cbind(nestedFBIData$state, nestedFBIData$year, distScore)) %>%
-  arrange(distScore) %>%
-  rename(State = V1,
-         Year = V2)
-FBIData %>%
-  filter(state == "Pennsylvania" & 
-           year == 2018) 
+  nest(nested = -c(state, year)) %>%
+  mutate(state = regmatches(state, 
+                            regexpr("[[:alpha:]]*\\s?[[:alpha:]]*", 
+                                    state)))
 ```
 
-So PA in this quick experiment comes in 10th place (if you count MA as 1st; which is... a choice) -- which is still 80th percentile, but I'm wondering if we had pragmatic considerations for selecting PA in addition to distance-based ones. I think that, unless it turns out that New Jersey publishes all their crimes in a Google Spreadsheet emailed to everyone on New Year's, we can still justify looking at PA with this result -- the distinction between any top 10 state other than NJ and maybe Kentucky is extremely minimal.
-
-Of course, the last analysis standardized the variables we looked at as well, so that rates of offense among less common crimes could be weighted equally to more common offenses. I need to do an inch more reading to have an opinion on this, I think -- it seems to me like we should care about the crimes with more absolute cases more here (and weight them accordingly), as our desired outcome isn't as much "what state has the same offender profiles" as it is "what has the same rate of crimes" -- that is, I think that a large percentage difference in a more common crime category is more important to us than a similar magnitude but smaller absolute number difference in a less common one. But I'm not entirely sure, so here's the analysis run with standardized data:
+Calculate each state's distance from MA:
 ```{r}
-nestedFBIData <- FBIData %>%
-  filter(age_category == "Under 18" &
-    state != "Iowa") %>%
+ranked_distances <- nested_fbi_data %>%
+  left_join(nested_fbi_data %>%
+  filter(state == "Massachusetts") %>%
+    select(-state, mass = nested),
+  by = "year") %>%
+  mutate(dist_tables = map2(nested, mass, vctrs::vec_rbind),
+         dist_score = map_dbl(dist_tables, dist),
+          year = as.numeric(year)) %>%
+  filter(!is.infinite(dist_score) & 
+           state != "Massachusetts") %>%
+  arrange(year, dist_score) %>%
+  group_by(year) %>%
+  # y is the rank of the state for that year -- a rank of 1 means its
+  # the most similar to MA that year
+  mutate(y = seq(1, 49)) %>%
+    ungroup() 
+
+ranked_distances
+```
+
+And quickly graph that:
+```{r}
+ranked_distances %>%
+  ggplot(aes(year, y, color = state)) +
+  geom_line()
+```
+
+Gross! Let's quickly graph that better:
+```{r}
+ranked_distances %>%
+  filter(y < 11) %>%
+  ggplot(aes(year, y, color = state)) +
+  geom_line()
+```
+
+"Better", at any rate. I'm going to set aside visualizations for a second and 
+just pull PA rankings:
+
+```{r}
+ranked_distances %>%
+  filter(state == "Pennsylvania")
+```
+
+So PA almost never cracks the top 10, except for 2016. However, it only drops 
+out of the top 15 once -- and that's 2017, when a few other states have wild 
+variances in our first graph. I wonder what the average ranking is across the 
+board -- looks like most states are pretty stable:
+
+```{r}
+library(magrittr)
+ranked_distances %>%
+  group_by(state) %>%
+  summarise(mean_rank = mean(y), median_rank = median(y)) %>%
+  arrange(mean_rank) %T>%
+  write.csv("state_ranks.csv")
+```
+
+I'm frankly shocked that WV is in the top bracket; KY is also surprising, but 
+the rest of the states make sense. It also feels to me like we've got a few 
+tiers here -- the top-tier proxies are states from WV to KY, which are typically 
+in that top five bucket. Then the secondary tier (RI -> HI, maybe) hovers around
+13. 
+
+PA is in that second tier, with a mean ranking of 13.2 (again, 1 is closest) and
+median ranking of... 13. It feels valuable to me to spend time looking into how 
+accessible data for those top-tier states might be -- but if not, I think we've 
+reinforced that PA is a decent option nontheless.
+
+For completeness, I should make the same table based on standardized crime 
+rates:
+
+```{r}
+nested_scaled_data <- fbi_data %>%
+  filter(age_category == "Under 18") %>%
+  ## these variables are the same ones done with 2014 data
   select(state, 
          year, 
          robbery, 
@@ -80,46 +135,48 @@ nestedFBIData <- FBIData %>%
          larceny_theft, 
          motor_vehicle_theft, 
          estimated_population) %>%
+  mutate(year = as.character(year)) %>%
+  ## get per-capita crime rate
   mutate_if(is.numeric, funs(. / estimated_population)) %>%
   mutate_if(is.numeric, scale) %>%
   select(-estimated_population) %>%
-  nest(data = -c(state)) %>%
-  rename(other_states = data)
+  ## this bit is wonky if you don't know R; I'm creating a column of dataframes
+  ## containing data for only that state
+  nest(nested = -c(state, year)) %>%
+  mutate(state = regmatches(state, 
+                            regexpr("[[:alpha:]]*\\s?[[:alpha:]]*", 
+                                    state)))
 
-frames <- vector("list")
-for (i in seq_along(nestedFBIData$state)) {
-  frames[i] <- nest(data = everything(), 
-                    rbind(nestedFBIData[[i, "other_states"]], 
-                          nestedFBIData[nestedFBIData$state == "Massachusetts", ][[2]][[1]]))
-}
 
-## now iterate through those dataframes calulating euclidian distance
-## (same metric as last time)
-distScoreStand <- vector()
-for (i in seq_along(frames)) {
-  distScoreStand[i] <- dist(frames[[i]][[1]])
-}
-## now let's label those scores and examine the results!
-standScores <- as_tibble(cbind(nestedFBIData$state, distScoreStand)) %>%
-  arrange(distScoreStand) %>%
-  rename(State = V1)
+ranked_scaled_distances <- nested_scaled_data %>%
+  left_join(nested_scaled_data %>%
+  filter(state == "Massachusetts") %>%
+    select(-state, mass = nested),
+  by = "year") %>%
+  mutate(dist_tables = map2(nested, mass, rbind),
+         dist_tables = map(dist_tables, as_tibble),
+         dist_score = map_dbl(dist_tables, dist),
+          year = as.numeric(year)) %>%
+  filter(!is.infinite(dist_score) & 
+           state != "Massachusetts") %>%
+  arrange(year, dist_score) %>%
+  group_by(year) %>%
+  # y is the rank of the state for that year -- a rank of 1 means its
+  # the most similar to MA that year
+  mutate(y = seq(1, 50)) %>%
+    ungroup()
 
-standScores
-
-standScores %>%
-  tail(-10)
+ranked_scaled_distances
 ```
-
-PA now is number 12, down two spots. Notably, Vermont came from almost dead last to an undisputable second place here. Having Vermont and New Hampshire here makes an amount of sense to me -- those are extremely similar states, after all. I'll look forward to talking about this with people on Tuesday -- I'm not even clear myself on what this implies for our next steps.
 
 ```{r}
-library(ggplot2)
-graphFrame <- distScores %>%
-  full_join(standScores) %>%
-  drop_na()
-
-graphFrame %>%
-  mutate(abb = setNames(state.abb, state.name)[State]) %>%
-  ggplot(aes(distScore, distScoreStand)) + 
-  geom_text(aes(label = abb))
+ranked_scaled_distances %>%
+  group_by(state) %>%
+  summarise(mean_rank = mean(y), median_rank = median(y)) %>%
+  arrange(mean_rank) %T>%
+  write.csv("state_scaled_ranks.csv")
 ```
+
+PA drops to 14th, and some weird contenders (ND? MT?) enter the upper tiers. I 
+think I'm justified in saying unscaled data is probably a better approach, but I
+don't think it changes much.
