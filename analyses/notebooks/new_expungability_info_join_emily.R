@@ -63,7 +63,7 @@ has_chapter_section$new <- 1
 chg_mod2 <- chg_mod %>% left_join(has_chapter_section %>% select(Charge, NW.Counts, SF.Counts, expung2, new))
 chg_mod2$expung2 <- chg_mod2$expung2 %>% recode(no = 'No', yes = 'Yes')  # capitalize
 chg_mod2$Expungeable.[!is.na(chg_mod2$new)] <- chg_mod2$expung2[!is.na(chg_mod2$new)]  # combine new expungability info with old
-chg_mod2 <- chg_mod2 %>% select(-expung2, -new)  # remove junk columns
+chg_mod2 <- chg_mod2 %>% select(-expung2, -new, -alphcharge)  # remove junk columns
 
 # how many charges' expungability were filled in?
 nrow(chg[chg$Expungeable. != '',])  # 776 filled in
