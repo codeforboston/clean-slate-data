@@ -60,7 +60,9 @@ has_chapter_section$alphcharge[!(has_chapter_section$alphcharge %in% alphaonly(c
 chg_mod <- chg_mod %>% mutate(alphcharge = alphaonly(Charge))  # make alphanumeric isolation column in left table
 colnames(has_chapter_section)[colnames(has_chapter_section) == 'Expungeable.'] <- 'expung2'
 has_chapter_section$new <- 1
-chg_mod2 <- chg_mod %>% left_join(has_chapter_section %>% select(Charge, NW.Counts, SF.Counts, expung2, new))
+# chg_mod2 <- chg_mod %>% left_join(has_chapter_section %>% select(Charge, NW.Counts, SF.Counts, expung2, new))
+chg_mod2 <- chg_mod %>% left_join(has_chapter_section %>% select(alphcharge, NW.Counts, SF.Counts, expung2, new))
+
 chg_mod2$expung2 <- chg_mod2$expung2 %>% recode(no = 'No', yes = 'Yes')  # capitalize
 chg_mod2$Expungeable.[!is.na(chg_mod2$new)] <- chg_mod2$expung2[!is.na(chg_mod2$new)]  # combine new expungability info with old
 chg_mod2 <- chg_mod2 %>% select(-expung2, -new, -alphcharge)  # remove junk columns
@@ -72,3 +74,17 @@ nrow(chg_mod2[chg_mod2$Expungeable. != '',])  # 1233 filled in
 # export
 # write.csv(chg_mod2, 'prosecution_charges_emily.csv')
 write.csv(chg_mod2, 'clean-slate/data/processed/prosecution_charges.csv')
+
+# which ones are still missing? export to CSV that everyone can edit
+missing <- chg_mod2[chg_mod2$Expungeable. == '',]
+missing <- select(missing, -X)
+
+# strip only numerics from chapter/section and arrange numerically
+missing$numchap <- missing$Chapter %>% str_extract_all('[[0-9]]') %>% lapply(FUN = function(x){paste(x, collapse = '')}) %>%
+  unlist %>% as.numeric  # not all of the chapters are correct (some numbers were stripped out of context by Dawn's regex), may have to manually identify
+missing$numsec <- missing$Section %>% str_extract_all('[[0-9]]') %>% lapply(FUN = function(x){paste(x, collapse = '')}) %>% 
+  unlist %>% as.numeric
+missing <- arrange(missing, numchap, numsec)
+missing <- missing %>% select(-numchap, -numsec)
+missing$tempID <- 1:nrow(missing) 
+write.csv(missing, 'clean-slate/data/raw/missing_expungeability_07-21.csv')
