@@ -11,4 +11,7 @@ Please document your code (with comments mentioning how and why you've wrangled 
 
 |File / Folder|Description|
 |----|----|
-|*file name here*|*description here*|
+|prosecution_northwestern.csv|Prosecution data from the Northwestern DA|
+|prosecution_suffolk.csv|Prosecution data from the Suffolk DA|
+|prosecution_charges.csv|Unique charges that appear in prosecution data, with markers for sex and murder charges|
+|prosecution_charges_detailed.csv|Same as prosecution_charges, but some charges have additional information needed to determine expungeability|
