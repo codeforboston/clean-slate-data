@@ -98,4 +98,20 @@ chg_mod$extra_criteria[is.na(chg_mod$Expungeable.) &
 # Write to a new CSV
 write.csv(chg_mod, 'clean-slate/data/processed/prosecution_charges_detailed.csv')
 
+#### Post- Master Crime List modifications ####
+# Now we will get the missing expungeability for charges with extra criteria, using a modified Master Crime List that has also a column for extra criteria.
 
+mclmod <- read.csv('clean-slate/data/raw/ExpungeCategories_mod.csv')  # import modified master crime list (as of 08/26/20)
+
+# Get unique combos of chapter, section, and extra criteria w/ expungeability. We do this because some of the charges on the master crime list have multiple variations with the same chapter, section, and extra criteria. 
+# Filter just rows that had extra criteria filled in, since we haven't covered all of the charges on the Master Crime List yet.
+# Also filter out rows that have no chapter and section, because those may lead to a false match and the only rows we are concerned about now are ones that had previously been matched by chapter and section.
+criteria <- unique(mclmod %>% select(Chapter, Section, extra_criteria, Expungeable.) %>% 
+                     filter(extra_criteria != '' & Chapter != ''))  
+
+colnames(criteria)[colnames(criteria) == 'Expungeable.'] <- 'exp2'  # rename this column to avoid mixup with "Expungeable."
+chg_mod2 <- chg_mod %>% left_join(criteria)  # join the master crime list data
+chg_mod2$Expungeable.[is.na(chg_mod2$Expungeable.)] <- chg_mod2$exp2[is.na(chg_mod2$Expungeable.)]  # add new expungeability data from throwaway column
+chg_mod2 <- chg_mod2 %>% select(-exp2)  # remove throwaway column
+
+write.csv(chg_mod2, 'clean-slate/data/processed/prosecution_charges_detailed.csv')
