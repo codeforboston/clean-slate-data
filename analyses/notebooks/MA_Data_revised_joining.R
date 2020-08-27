@@ -45,7 +45,7 @@ chg_mod$extra_criteria[is.na(chg_mod$Expungeable.) &
                          (grepl(' armed', tolower(chg_mod$Charge)) | grepl('firearm', tolower(chg_mod$Charge)))] <- 'armed'
 chg_mod$extra_criteria[is.na(chg_mod$Expungeable.) & 
                          chg_mod$Chapter == '266' & chg_mod$Section == '14' &
-                         grepl('unarmed', tolower(chg_mod$Charge))] <- 'unarmed'
+                         grepl('unarmed', tolower(chg_mod$Charge))] <- 'assault'  # one specifically says "unarmed and assault"
 
 # Ch. 266 Sec. 17: Burglary in daytime or enter at night — armed is not expungeable
 chg_mod$extra_criteria[is.na(chg_mod$Expungeable.) & 
