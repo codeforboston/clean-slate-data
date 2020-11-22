@@ -2,5 +2,4 @@
 *.pdf
 */.ipynb_checkpoints/*
 *checkpoint.ipynb
-analyses/notebooks/.ipynb_checkpoints/Disposition exploration-checkpoint.ipynb
-analyses/notebooks/.ipynb_checkpoints/How many expungable-checkpoint.ipynb
+*.xlsx
