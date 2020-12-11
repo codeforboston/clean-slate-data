@@ -31,7 +31,7 @@ Our goal is to help folks help make criminal record expungement more accessible 
 
 ### Questions to Answer
 
-We are working with Cititzens for Juvenile Justice (CFJJ) and we're helping to answer the following questions and specifically for those with criminal charges under 21 (for all questions - only concerned with those under 21).
+We are working with Citizens for Juvenile Justice (CFJJ) and we're helping to answer the following questions and specifically for those with criminal charges under 21 (for all questions - only concerned with those under 21).
 
 1. **Find how many individuals are eligible for expungement under our current policies.** Expungement is possible only for those with only one charge AND the charge must not be part of the list of ineligible offenses
 2. Number of individuals that would be eligible for expungment if there was only one incident (but may have multiple offenses/charges within this incident) with none of the offenses on the list of ineligible offenses
@@ -66,6 +66,7 @@ We meet and communicate through slack. We use google drive for storing pdf and m
 
 - The Data team is working out of this repo and has recently started using [github issues](https://github.com/codeforboston/clean-slate/issues) to keep track of things.
 - The best place to start is attend weekly meetings to discuss and stay up to date with the Data team's progress and assist on tasks that the team needs an extra hand with
+- Please add description of what you worked on to [Data quests and to-dos]("https://docs.google.com/document/d/1vCSLZRlULW2NWgqU5PxA0ByAK007epukdnADk0nnZ5E/edit#heading=h.h2quvkmpr67g") after the end of each work session when you're contributing.
 
 ### App Team
 
