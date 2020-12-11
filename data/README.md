@@ -2,10 +2,11 @@
 
 This folder contains all datasets used in the process of this project. Specifically, datasets have been broken out here into the following groups:
 
-* [Raw data](raw) contains datasets in the format we obtained them in -- errors have not been fixed, holes have not been patched, and here there be dragons.
-* [Cleaned data](cleaned) contains datasets that have been cleaned of errors and is now ready to be wrangled as needed for analyses.
-* [Processed data](processed) contains datasets in the format needed for a specific analysis.
-
-Each of these folders should also contain the scripts used to create the data included.
+|           Name           |                                                                    Description                                                                    |   Status   |
+| :----------------------: | :-----------------------------------------------------------------------------------------------------------------------------------------------: | :--------: |
+|     'fbi_crime_data'     |                             compilation of different types of crimes committed recorded by the FBI from 2014 to 2018                              | Deprecated |
+|     'ma_court_data'      |                   main dataset we are working with to extract information on how many individuals meet expungeability criterias                   |   Active   |
+|    'crime_categories'    | list of crime categories and whether or not they are expungeable. categories in this list are not mapped to the categories in ma_court_data files |  Inactive  |
+| 'prosecution_categories' |                  list of crime categories mapped to categories in ma_court_data with indication on whether they are expungeable                   |   Active   |
 
 Please note that if your data is sensitive (i.e., can be tied to an individual), we do not want it in this repo. Please save it as a .csv (so it'll be blocked by our .gitignore) and contact a collaborator to figure out a solution for data storage moving forward.

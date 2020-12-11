@@ -1,0 +1,57 @@
+I'm going ahead and stealing the essence of the script used to clean the 2018 data, already in this folder, and applying it to five years of datasets. 
+
+```{r}
+library(here) ## Provides relative pathway functionalities
+library(readxl) ## read .xlsx
+library(dplyr) ## easy data manipulation
+library(stringr) ## easy string manipulation
+library(openxlsx) ## write .xlsx
+## first three rows are not data
+FBIData <- vector("list")
+FBIData$y2018 <- read_excel("../../raw/2018_FBI_aggregate_crime_data.xls", skip = 3)
+FBIData$y2017 <- read_excel("../../raw/2017_FBI_aggregate_crime_data.xls", skip = 3)
+FBIData$y2016 <- read_excel("../../raw/2016_FBI_aggregate_crime_data.xls", skip = 3)
+FBIData$y2015 <- read_excel("../../raw/2015_FBI_aggregate_crime_data.xls", skip = 3)
+FBIData$y2014 <- read_excel("../../raw/2014_FBI_aggregate_crime_data.xls", skip = 3)
+## github:hrbrmstr/hrbrmstrmisc for the base of this function
+cleanColnames <- function(x) {
+  x <- tolower(x)
+  x <- str_replace(x, "[:punct:][:punct:][:punct:]2", "age_category")
+  x <- gsub("[[:space:][:punct:]]+", " ", x)
+  x <- str_remove_all(x, "\\d") ## this dataset is only 2018, so I remove
+  ## the "2018" from the population estimate variable name alongside footnotes 
+  x <- trimws(x)
+  x <- gsub(" ", "_", x)
+  x
+}
+for (i in seq_along(FBIData)) { 
+  names(FBIData[[i]]) <- cleanColnames(names(FBIData[[i]]))
+}
+
+FBIData <- FBIData$y2018 %>%
+  mutate(year = 2018) %>%
+  bind_rows(FBIData$y2017 %>%
+              mutate(year = 2017)) %>%
+  bind_rows(FBIData$y2016 %>%
+              mutate(year = 2016)) %>%
+  bind_rows(FBIData$y2015 %>%
+              mutate(year = 2015)) %>%
+  bind_rows(FBIData$y2014 %>%
+              mutate(year = 2014))
+```
+
+```{r}
+FBIData %>% ## states and populations are only listed once across the two rows
+  mutate(state = ifelse(is.na(state), lag(state, 1), state), 
+         state = str_to_title(state), ## feels more natural than all caps
+         state = str_remove_all(state, "\\d*,*"), ## strip footnotes
+         ## same deal for population and reporting agencies as states
+         estimated_population = ifelse(is.na(estimated_population), 
+                                       lag(estimated_population, 1), 
+                                       estimated_population),
+         number_of_agencies = ifelse(is.na(number_of_agencies), 
+                                     lag(number_of_agencies, 1),
+                                     number_of_agencies)) %>%
+  tidyr::drop_na(age_category) %>%
+  write.xlsx("FBI_aggregate_crime_data_2014_2018.xls")
+```

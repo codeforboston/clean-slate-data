@@ -1,0 +1,36 @@
+This script cleans the FBI 2018 crimes dataset, fixing column names and blank cells. It takes as input data/raw/2018_FBI_aggregate_crime_data.xls and returns data/cleaned/fbi_aggregated_2018/2018_FBI_aggregrate_crime_data.xls (which I manually saved into a .xlsx for compatibility reasons with another script)
+```{r}
+library(here) ## Provides relative pathway functionalities
+library(readxl) ## read .xlsx
+library(dplyr) ## easy data manipulation
+library(stringr) ## easy string manipulation
+library(openxlsx) ## write .xlsx
+## first three rows are not data
+FBIData <- read_excel("../../raw/2018_FBI_aggregate_crime_data.xls", skip = 3)
+## github:hrbrmstr/hrbrmstrmisc for the base of this function
+cleanColnames <- function(x) {
+  x <- tolower(x)
+  x <- gsub("[[:space:][:punct:]]+", " ", x)
+  x <- str_remove_all(x, "[[0-9]]") ## this dataset is only 2018, so I remove
+  ## the "2018" from the population estimate variable name alongside footnotes 
+  x <- trimws(x)
+  x <- gsub(" ", "_", x)
+  x
+}
+names(FBIData) <- cleanColnames(names(FBIData))
+names(FBIData)[[2]] <- "age_category"
+FBIData %>% ## states and populations are only listed once across the two rows
+  mutate(state = ifelse(is.na(state), lag(state, 1), state), 
+         state = str_to_title(state), ## feels more natural than all caps
+         state = str_remove_all(state, "\\d*,*"), ## strip footnotes
+         ## same deal for population and reporting agencies as states
+         estimated_population = ifelse(is.na(estimated_population), 
+                                       lag(estimated_population, 1), 
+                                       estimated_population),
+         number_of_agencies = ifelse(is.na(number_of_agencies), 
+                                     lag(number_of_agencies, 1),
+                                     number_of_agencies),
+         year = 2018) %>%
+  head(-9) %>% ## last nine rows are footnotes
+  write.xlsx("2018_FBI_aggregate_crime_data.xls")
+```
