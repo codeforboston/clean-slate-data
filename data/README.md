@@ -9,4 +9,5 @@ This folder contains all datasets used in the process of this project. Specifica
 |    'crime_categories'    | list of crime categories and whether or not they are expungeable. categories in this list are not mapped to the categories in ma_court_data files |  Inactive  |
 | 'prosecution_categories' |                  list of crime categories mapped to categories in ma_court_data with indication on whether they are expungeable                   |   Active   |
 
-Please note that if your data is sensitive (i.e., can be tied to an individual), we do not want it in this repo. Please save it as a .csv (so it'll be blocked by our .gitignore) and contact a collaborator to figure out a solution for data storage moving forward.
+Please note that if your data is sensitive (i.e., can be tied to an individual), we do not want it in this repo.
+Please add it to the gitignore file so that it doesn't git pushed. Contact a collaborator to figure out a solution for data storage moving forward for files with sensitive information.
