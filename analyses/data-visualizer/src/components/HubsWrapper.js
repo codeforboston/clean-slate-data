@@ -66,7 +66,7 @@ const nwDefaultQuestions = [
 ];
 
 async function fetchData(){
-  await fetch("https://raw.githubusercontent.com/JoelTennyson/visualizer-demo/main/new_cleaned_nw.csv")
+  await fetch("https://raw.githubusercontent.com/codeforboston/clean-slate/master/data/cleaned/visualizer_northwestern.csv")
   .then(response => response.text())
   .then((text) => {
     let df = dataForge.fromCSV(text);
