@@ -122,12 +122,22 @@ const sfDefaultQuestions = [
 ];
 
 async function fetchData(){
+  // Northwest
   await fetch("https://raw.githubusercontent.com/codeforboston/clean-slate/master/data/cleaned/visualizer_northwestern.csv")
   .then(response => response.text())
   .then((text) => {
     let df = dataForge.fromCSV(text);
     window.nw = df;
     console.log('NW DATA FETCHED');
+  });
+
+  // Suffolk
+  await fetch("https://raw.githubusercontent.com/codeforboston/clean-slate/master/data/cleaned/visualizer_suffolk.csv")
+  .then(response => response.text())
+  .then((text) => {
+    let df = dataForge.fromCSV(text);
+    window.sf = df;
+    console.log('SF DATA FETCHED');
   });
 }
 
