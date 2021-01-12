@@ -82,17 +82,17 @@ function getEmptyEdits(question){
   }
 }
 
-const QuestionsHub = ({ loading, defaultQuestions }) => {
+const QuestionsHub = ({ loading, defaultQuestions, region, maxJuvenileAge, onlyJuveniles }) => {
     const [questions, setQuestions] = useState([]);
     const [hubSettings, setHubSettings] = useState({
-      region: 'Northwest',
+      region: region,
       editing: false,
-      maxJuvenileAge: 20,
-      onlyJuveniles: true,
+      maxJuvenileAge: (maxJuvenileAge) ? maxJuvenileAge : 20,
+      onlyJuveniles: (onlyJuveniles) ? true : false,
       edits: {
-        region: 'Northwest',
-        maxJuvenileAge: 20,
-        onlyJuveniles: true,
+        region: region,
+        maxJuvenileAge: (maxJuvenileAge) ? maxJuvenileAge : 20,
+        onlyJuveniles: (onlyJuveniles) ? true : false,
       }
     });
 
@@ -101,7 +101,7 @@ const QuestionsHub = ({ loading, defaultQuestions }) => {
     }, []);
 
     useEffect(() => {
-      if(loading === false){
+      if(!loading){
         for(let questionIndex in questions){
           questions[questionIndex].loading = true;
           updateQuestion(questions, setQuestions, questionIndex, questions[questionIndex]);
@@ -110,12 +110,29 @@ const QuestionsHub = ({ loading, defaultQuestions }) => {
     }, [loading]);
 
     useEffect(() => {
-      for(let questionIndex in questions){
-        questions[questionIndex].loading = true;
-        questions[questionIndex].maxAge = (hubSettings.onlyJuveniles) ? hubSettings.maxJuvenileAge : '';
-        updateQuestion(questions, setQuestions, questionIndex, questions[questionIndex]);
+      if(!loading){
+        console.log('JUVENILE SETTING CHANGED' + hubSettings.onlyJuveniles);
+        for(let questionIndex in questions){
+          questions[questionIndex].loading = true;
+          questions[questionIndex].maxAge = (hubSettings.onlyJuveniles) ? hubSettings.maxJuvenileAge : '';
+          updateQuestion(questions, setQuestions, questionIndex, questions[questionIndex]);
+        }
       }
     }, [hubSettings.onlyJuveniles, hubSettings.maxJuvenileAge]);
+
+    useEffect(() => {
+      if(!loading){
+        console.log('REGION CHANGED');
+        console.log('NEW REGION: ' + hubSettings.region);
+        console.log('CURRENTLY ALLOWING JUVENILES: ' + hubSettings.onlyJuveniles);
+        let newSettings = hubSettings;
+        if(hubSettings.region == 'sf'){
+          console.log('SETTING TO FALSE');
+          newSettings.onlyJuveniles = false;
+        }
+        setHubSettings({...newSettings});
+      }
+    }, [hubSettings.region]);
 
     function setDefaultQuestions(){
       let questions = [];
@@ -128,15 +145,28 @@ const QuestionsHub = ({ loading, defaultQuestions }) => {
       }
       setQuestions(questions);
     }
+
+    function getRegionName(region){
+      switch(region){
+        case 'nw':
+          return 'Northwest';
+        case 'sf':
+          return 'Suffolk';
+        case 'ms':
+          return 'Middlesex';
+        default:
+          return 'Unknown Region';
+      }
+    }
   
     return (
-      <div>
+      <Box m={4} className='hub-paper'>
 
-        <Paper className='hub-paper' display='flex'>
+        <Paper display='flex'>
 
           <Box display='flex' justifyContent='space-between' ml={2} mr={2} pt={1}>
             <Typography variant='h5'>
-              {hubSettings.region}
+              {getRegionName(hubSettings.region)}
             </Typography>
             <IconButton size='small' onClick={() => {
               let newSettings = hubSettings;
@@ -194,7 +224,7 @@ const QuestionsHub = ({ loading, defaultQuestions }) => {
 
         </Paper>
 
-      </div>
+      </Box>
     );
   };
   

@@ -29,12 +29,12 @@ const HubEditor = ({ hubSettings, setHubSettings }) => {
         hubSettings.edits.region = event.target.value;
         setHubSettings({...hubSettings});
       }}>
-        <FormControlLabel value='Northwest' control={<Radio color='primary' />} label='Northwest' />
+        <FormControlLabel value='nw' control={<Radio color='primary' />} label='Northwest' />
         <Box mt={-1}>
-          <FormControlLabel value='Middlesex' control={<Radio color='primary' disabled />} label='Middlesex' />
+          <FormControlLabel value='ms' control={<Radio color='primary' disabled />} label='Middlesex' />
         </Box>
         <Box mt={-1}>
-          <FormControlLabel value='Suffolk' control={<Radio color='primary' disabled />} label='Suffolk' />
+          <FormControlLabel value='sf' control={<Radio color='primary' />} label='Suffolk' />
         </Box>
       </RadioGroup>
     </FormControl>
@@ -81,12 +81,8 @@ const HubEditor = ({ hubSettings, setHubSettings }) => {
           <Box>
             {regionInput}
           </Box>
-          <Box mt={1.5}>
-            {ageThresholdInput}
-          </Box>
-          <Box mt={1.5}>
-            {ageInput}
-          </Box>
+          {hubSettings.region == 'nw' && <Box mt={1.5}>{ageThresholdInput}</Box>}
+          {hubSettings.region == 'nw' && <Box mt={1.5}>{ageInput}</Box>}
           <Box display='flex' justifyContent='flex-end' mt={1.5} mr={1}>
             {submitButton}
           </Box>

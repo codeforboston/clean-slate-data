@@ -1,4 +1,7 @@
 export default async function findAnswer(question, hubSettings){
+
+  console.log('FINDING AN ANSWER');
+
   let answerDf = window.nw;
   let answer;
   let totalIndividuals;
