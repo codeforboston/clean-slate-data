@@ -1,10 +1,27 @@
 export default async function findAnswer(question, hubSettings){
 
-  console.log('FINDING AN ANSWER');
+  //console.log('FINDING AN ANSWER');
 
-  let answerDf = window.nw;
+  let answerDf;
   let answer;
   let totalIndividuals;
+
+  console.log(hubSettings.region);
+
+  switch(hubSettings.region){
+    case 'nw':
+      answerDf = window.nw;
+      break;
+    case 'sf':
+      answerDf = window.sf;
+      break;
+    case 'ms':
+      answerDf = window.ms;
+      break;
+    default:
+      answerDf = window.nw;
+      break;
+  }
   
   if(hubSettings.onlyJuveniles){
     totalIndividuals = answerDf.where(row =>

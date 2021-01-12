@@ -16,7 +16,6 @@ import ChartPanel from "./ChartPanel";
 function addQuestion(questions, setQuestions){
   let new_question = getEmptyQuestion();
   new_question.editing = true;
-  //new_question.edits = getEmptyEdits(new_question);
   const new_questions = [...questions, new_question];
   setQuestions(new_questions);
 }
@@ -53,8 +52,8 @@ function getEmptyQuestion(){
     editing: false,
     edits: {},
     loading: false,
-    answer: '',
-    answerPercent: '',
+    answer: 0,
+    answerPercent: 0,
     eventType: 'offenses',
     maxEvents: '',
     maxIneligibleEvents: '',

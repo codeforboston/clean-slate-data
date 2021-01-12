@@ -7,9 +7,7 @@ const ChartPanel = ({ questions, hubSettings }) => {
 
     let chartData = [['Question', 'Percent Eligible']]
     for(let question of questions){
-      if(question.answerPercent !== ''){
         chartData.push([question.name, question.answerPercent]);
-      }
     }
 
     let chartTitle = (hubSettings.onlyJuveniles) 

@@ -22,13 +22,12 @@ const QuestionEditor = ({ question, question_index, updateQuestion, getEmptyEdit
     question.murderIneligible = question.edits.murderIneligible;
     question.guiltyIneligible = question.edits.guiltyIneligible;
     question.ineligibleIneligible = question.edits.ineligibleIneligible;
-    //question.maxAge = question.edits.maxAge;
 
     question.edits = getEmptyEdits(question);
     question.editing = false;
     question.loading = true;
-    question.answer = '';
-    question.answerPercent = '';
+    question.answer = 0;
+    question.answerPercent = 0;
 
     updateQuestion(question_index, question);
   }
