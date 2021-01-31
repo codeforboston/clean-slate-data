@@ -2,4 +2,4 @@
 *.pdf
 */.ipynb_checkpoints/*
 *checkpoint.ipynb
-
+*.xlsx
