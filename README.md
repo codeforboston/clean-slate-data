@@ -31,9 +31,9 @@ We need members of the community, data analysts, legal professionals, project ma
 - Join the [Code for Boston slack](https://communityinviter.com/apps/cfb-public/code-for-boston) and talk to us on the #clean-slate channel.
 - Contact us by [filling out our interest form](https://forms.gle/FZrBfNjC6JNtsQXP7).
 - Look at what we’ve done so far - we’re collecting what we learn in shared folders and some separate repositories.
+  - Start with this repo's [wiki](https://github.com/codeforboston/clean-slate-data/wiki), which gives an overview of our work on the policy impact data analysis efforts
   - Our [shared folders](https://drive.google.com/drive/folders/1EiEt97817QzZNip9X5yrsXAdPCqUdF0M?usp=sharing).
-  - This repo's [wiki](https://github.com/codeforboston/clean-slate/wiki), which contains notes on the policy impact data analysis efforts.
-  - An online [juvenile sealing app](https://github.com/knod/docassemble-juvenilesealing) that's currently under development.
+  - From our app team, an online [juvenile sealing app](https://github.com/knod/docassemble-juvenilesealing) that's currently under development.
 
 ## Our Goals
 
