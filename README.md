@@ -1,6 +1,6 @@
 <!-- README.md -->
 
-# Clean Slate
+# Clean Slate - Data Team
 
 _Expungement with Citizens for Juvenile Justice, Code for Boston, and legal aid services._
 
@@ -10,17 +10,21 @@ _Note: Expungement is different than sealing_
 
 ## What’s Wrong
 
-If you ever got convicted of a crime or arraigned, even if it turns out someone made a mistake, you’ll have a criminal record. Anyone that does a background check, like an employer, sees that you have a criminal record and that’s the end of it. You lose out.
+If you've ever been arraigned for a crime -- even if you were not found guilty or it turns out someone made a mistake -- you’ll have a criminal record. Anyone that does a background check, like an employer, sees that you have a criminal record.
 
 **Even something false or small can stop you from getting honest work, housing, education, and other opportunities.**
 
-Massachusetts expungement laws were created in October of 2018, but almost no one can qualify and applying is hard. Sometimes it’s even a bad idea to expunge your records and people don’t know.
+Massachusetts expungement laws were created in October of 2018. It is difficult to determine who may be eligible to have their record expunged, and therefore what the impact this law (or future changes to it) may be. 
 
 [Citizens For Juvenile Justice](https://www.cfjj.org/) is working with [Code for Boston](https://www.codeforboston.org/) (a civic tech volunteer organization) and legal aid services in the Boston area to tackle this problem on a project called Clean Slate.
 
+This is the 'data analysis' part of the Clean Slate team. We are working to understand how many people are (likely) currently eligible to have their records expunged, and how many may be eligible if the law is changed in variuos ways. 
+
+We also have a team working on an app to help individuals understand whether their records are eligible: [Clean Slate.](https://github.com/codeforboston/clean-slate/)
+
 ## Who We Need
 
-We need members of the community, legal professionals, community advocates, project managers, designers, technologists, and people passionate about criminal justice reform to help us understand what’s wrong with what we have and to try to make it better.
+We need members of the community, data analysts, legal professionals, project managers, and people passionate about criminal justice reform to help us understand what’s wrong with what we have and to try to make it better.
 
 ## Get Involved
 
@@ -33,7 +37,7 @@ We need members of the community, legal professionals, community advocates, proj
 
 ## Our Goals
 
-1. Make it easier for folks to apply for expungement.
+1. Determine how many people are now or may soon be (likely) eligible for expungement. 
 1. Show what parts of the law are stopping most people from expunging their records.
 1. Digitally organize to advocate for changes to the law.
 
