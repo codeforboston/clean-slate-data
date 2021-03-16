@@ -3,7 +3,8 @@ html {
 }
 
 .hub-paper {
-  width: 30%;
+  width: 32%;
+  min-width: 390px;
 }
 
 .question-paper {
@@ -12,4 +13,6 @@ html {
 
 .hubs-wrapper {
   width: 100%;
+  display: flex;
+  flex-wrap: wrap;
 }

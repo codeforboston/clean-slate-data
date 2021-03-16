@@ -19,8 +19,7 @@ const Question = ({ question, question_index, moveQuestion, deleteQuestion, upda
         findAnswer(question, hubSettings)
         .then((res) => {
           question.loading = false;
-          question.answer = res[0];
-          question.answerPercent = res[1];
+          question.answer = res;
           updateQuestion(question_index, question);
         });
       }
@@ -32,6 +31,24 @@ const Question = ({ question, question_index, moveQuestion, deleteQuestion, upda
       updateQuestion={updateQuestion}
       getEmptyEdits={getEmptyEdits}
     />
+
+    function getQuestionAnswerDisplay(){
+      let unit = hubSettings.descriptionUnit;
+      let a = question.answer;
+      if(question.loading || !question.answer){
+        return <div>LOADING</div>
+      } else {
+        return <div>
+          {
+            a.EligibleAnytime.percentOfTotal + '% of ' + unit + ' (' + a.EligibleAnytime.individuals + ')' +' are potentially eligible for expungement. ' +
+            'Of those, ' + a.EligibleToday.percentOfEligibleAnytime + '% (' + a.EligibleToday.individuals + ') are eligible currently, and ' + 
+            a.EligibleLater.percentOfEligibleAnytime + '% (' + a.EligibleLater.individuals + ') will be eligible in the future. ' +
+            'Of those eligible currently, ' + a.EligibleTodayIncomplete.percentOfEligibleToday + '% (' + a.EligibleTodayIncomplete.individuals + ') have incomplete disposition data. ' +
+            'Of those eligible in the future, ' + a.EligibleLaterIncomplete.percentOfEligibleLater + '% (' + a.EligibleLaterIncomplete.individuals + ') have incomplete disposition data. ' 
+          }
+        </div>
+      }
+    }
   
     return (
       <Paper className='question-paper'>
@@ -74,7 +91,7 @@ const Question = ({ question, question_index, moveQuestion, deleteQuestion, upda
         </Box>
         <Box mt={-0.7} ml={1.5} mb={1.5}>
           <Typography variant='subtitle2'>
-            {(question.loading) ? 'LOADING' : question.answer + ' Eligible individuals (' + question.answerPercent + '%)'}
+            {getQuestionAnswerDisplay()}
           </Typography>
         </Box>
 

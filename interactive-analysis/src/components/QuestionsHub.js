@@ -6,11 +6,12 @@ import Button from '@material-ui/core/Button';
 import AddIcon from '@material-ui/icons/Add';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
-import IconButton from '@material-ui/core/IconButton';
-import SettingsIcon from '@material-ui/icons/Settings';
+import Select from '@material-ui/core/Select';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import InputLabel from '@material-ui/core/InputLabel';
 
 import Question from "./Question";
-import HubEditor from "./HubEditor";
 import ChartPanel from "./ChartPanel";
 
 function addQuestion(questions, setQuestions){
@@ -52,16 +53,9 @@ function getEmptyQuestion(){
     editing: false,
     edits: {},
     loading: false,
+    categories: [],
     answer: 0,
-    answerPercent: 0,
-    eventType: 'offenses',
     maxEvents: '',
-    maxIneligibleEvents: '',
-    sexIneligible: false,
-    murderIneligible: false,
-    guiltyIneligible: false,
-    ineligibleIneligible: false,
-    maxAge: '',
   };
   question.edits = getEmptyEdits(question);
   return question;
@@ -70,29 +64,18 @@ function getEmptyQuestion(){
 function getEmptyEdits(question){
   return {
     name: question.name,
-    eventType: question.eventType,
+    categories: question.categories,
     maxEvents: question.maxEvents,
-    maxIneligibleEvents: question.maxIneligibleEvents,
-    sexIneligible: question.sexIneligible,
-    murderIneligible: question.murderIneligible,
-    guiltyIneligible: question.guiltyIneligible,
-    ineligibleIneligible: question.ineligibleIneligible,
-    maxAge: question.maxAge,
   }
 }
 
-const QuestionsHub = ({ loading, defaultQuestions, region, maxJuvenileAge, onlyJuveniles }) => {
+const QuestionsHub = ({ loading, defaultQuestions, region, maxJuvenileAge, ageCategory }) => {
     const [questions, setQuestions] = useState([]);
     const [hubSettings, setHubSettings] = useState({
       region: region,
-      editing: false,
+      descriptionUnit: (region != 'ms') ? 'individuals' : 'cases',
       maxJuvenileAge: (maxJuvenileAge) ? maxJuvenileAge : 20,
-      onlyJuveniles: (onlyJuveniles) ? true : false,
-      edits: {
-        region: region,
-        maxJuvenileAge: (maxJuvenileAge) ? maxJuvenileAge : 20,
-        onlyJuveniles: (onlyJuveniles) ? true : false,
-      }
+      ageCategory: ageCategory,
     });
 
     useLayoutEffect(() => {
@@ -108,41 +91,24 @@ const QuestionsHub = ({ loading, defaultQuestions, region, maxJuvenileAge, onlyJ
       }
     }, [loading]);
 
-    useEffect(() => {
-      if(!loading){
-        console.log('JUVENILE SETTING CHANGED' + hubSettings.onlyJuveniles);
-        for(let questionIndex in questions){
-          questions[questionIndex].loading = true;
-          questions[questionIndex].maxAge = (hubSettings.onlyJuveniles) ? hubSettings.maxJuvenileAge : '';
-          updateQuestion(questions, setQuestions, questionIndex, questions[questionIndex]);
-        }
-      }
-    }, [hubSettings.onlyJuveniles, hubSettings.maxJuvenileAge]);
-
-    useEffect(() => {
-      if(!loading){
-        console.log('REGION CHANGED');
-        console.log('NEW REGION: ' + hubSettings.region);
-        console.log('CURRENTLY ALLOWING JUVENILES: ' + hubSettings.onlyJuveniles);
-        let newSettings = hubSettings;
-        if(hubSettings.region == 'sf'){
-          console.log('SETTING TO FALSE');
-          newSettings.onlyJuveniles = false;
-        }
-        setHubSettings({...newSettings});
-      }
-    }, [hubSettings.region]);
-
     function setDefaultQuestions(){
       let questions = [];
       for(let question of defaultQuestions){
         let new_question = getEmptyQuestion();
         new_question = Object.assign(new_question, question);
         new_question.edits = getEmptyEdits(new_question);
+        // question will not be answered until loading switches from 'initial' to 'true'
         new_question.loading = 'initial';
         questions.push(new_question);
       }
       setQuestions(questions);
+    }
+
+    function reloadAllQuestions(){
+      for(let questionIndex in questions){
+        questions[questionIndex].loading = true;
+        updateQuestion(questions, setQuestions, questionIndex, questions[questionIndex]);
+      }
     }
 
     function getRegionName(region){
@@ -157,9 +123,36 @@ const QuestionsHub = ({ loading, defaultQuestions, region, maxJuvenileAge, onlyJ
           return 'Unknown Region';
       }
     }
+
+    const ageCategorySelection = <Box display='flex' mt={1} mb={2} ml={5} mr={5}>
+      <FormControl display='flex' fullWidth={true}>
+        <InputLabel id='age-category-label'>Analysis includes:</InputLabel>
+        <Select labelId='age-category-label' value={hubSettings.ageCategory} onChange={(event) => {
+          hubSettings.ageCategory = event.target.value;
+          setHubSettings({...hubSettings});
+          reloadAllQuestions();
+        }}>
+          <MenuItem value={'allAges'}>
+            <Typography variant='subtitle2'>
+              All individuals
+            </Typography>
+          </MenuItem>
+          {hubSettings.region != 'sf' && <MenuItem value={'onlyJuvenile'}>
+            <Typography variant='subtitle2'>
+              {'Individuals with only juvenile offenses (under ' + (parseInt(hubSettings.maxJuvenileAge) + 1) + ')'}
+            </Typography>
+          </MenuItem>}
+          {hubSettings.region != 'sf' && <MenuItem value={'onlyAdult'}>
+            <Typography variant='subtitle2'>
+              {'Individuals with only adult offenses (over ' + parseInt(hubSettings.maxJuvenileAge) + ')'}
+            </Typography>
+          </MenuItem>}
+        </Select>
+      </FormControl>
+    </Box>
   
     return (
-      <Box m={4} className='hub-paper'>
+      <Box m={1} className='hub-paper'>
 
         <Paper display='flex'>
 
@@ -167,32 +160,9 @@ const QuestionsHub = ({ loading, defaultQuestions, region, maxJuvenileAge, onlyJ
             <Typography variant='h5'>
               {getRegionName(hubSettings.region)}
             </Typography>
-            <IconButton size='small' onClick={() => {
-              let newSettings = hubSettings;
-              if(hubSettings.editing === true){
-                // Toggle hub editor off
-                newSettings.editing = false;
-                newSettings.edits.region = hubSettings.region;
-                newSettings.edits.maxJuvenileAge = hubSettings.maxJuvenileAge;
-                newSettings.edits.onlyJuveniles = hubSettings.onlyJuveniles;
-                setHubSettings({...newSettings});
-              } else {
-                // Toggle hub editor on
-                newSettings.editing = true;
-                setHubSettings({...newSettings});
-              }
-            }}>
-              <SettingsIcon />
-            </IconButton>
-          </Box>
-          <Box ml={3}>
-            <Typography variant='subtitle2'>
-              {(hubSettings.onlyJuveniles) ? 
-                'Individuals with a juvenile offense (below age ' + (parseInt(hubSettings.maxJuvenileAge) + 1) + ')' : 'Individuals of any age'}
-            </Typography>
           </Box>
 
-          {hubSettings.editing && <HubEditor hubSettings={hubSettings} setHubSettings={setHubSettings} />}
+          {ageCategorySelection}
 
           <ChartPanel questions={questions} hubSettings={hubSettings}/>
 

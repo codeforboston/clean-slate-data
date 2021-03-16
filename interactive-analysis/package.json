@@ -30,7 +30,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/codeforboston/clean-slate"
+    "url": "https://github.com/codeforboston/clean-slate-data"
   },
   "bugs": {
     "url": "https://github.com/gatsbyjs/gatsby/issues"

@@ -9,11 +9,11 @@ export default function Home() {
   <div>
 
     <Helmet>
-      <title>Prototype Visualizer</title>
+      <title>Interactive Analysis</title>
       <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
     </Helmet>
 
-    <Typography variant='h4'>Prototype Visualizer</Typography>
+    <Typography variant='h4'>Interactive Analysis</Typography>
 
     <HubsWrapper />
 
