@@ -1,0 +1,49 @@
+Column,Code,Description
+municip_code_col,ABI,Abington
+municip_code_col,BAR,Barnstable
+municip_code_col,BRI,Bridgewater
+municip_code_col,BRO,Brockton
+municip_code_col,EAS,East Bridgewater
+municip_code_col,SAD,Sandwich
+municip_code_col,WEG,West Bridgewater
+municip_code_col,WHI,Whitman
+municip_code_col,YAR,Yarmouth
+f/m_col,F,Felony
+f/m_col,M+,Misdemeanor punishable by more than 100 days incarceration
+f/m_col,M-,Misdemeanor punishable by no Misdemeanor punishable by no or less
+f/m_col,CM ,Civil Motor Vehicle Infraction 
+stats_col,01,OUI 11 Drugs
+stats_col,02,MV Homicide 12 Nonsupport
+stats_col,03,Serious MV 13 All Other
+stats_col,04,All Other MV
+stats_col,05,Breaking/Entering/Trespass
+stats_col,06,Larceny/Fraud
+stats_col,07,Disorderly/Disturbing
+stats_col,08,Property Destruction
+stats_col,09,Assault
+stats_col,10,Firearms 
+fine_col,A,100% TO GENERAL FUND G.L. c.29A §3; c.85 §32; c.280 §2
+fine_col,B,100% TO HIGHWAY FUND G.L. c.64E §13
+fine_col,C,100% TO COUNTY G.L. c.85 §32; c.97 §7
+fine_col,D,"100% TO MUNICIPALITY G.L. c.21 §6I; c.40 §21; c.46 §§ 25 & 27; c.48 §§ 24, 40, 53-54; c.83 §10; c.85 §32; c.87 §6; c.111 §188; c.165 §24; c.266 §9; c.280 §2"
+fine_col,E,"100% TO MASS. PORT AUTHORITY St. 1956, c.465 §§ 3(a), 23"
+fine_col,F,100% TO STATE UNIVERSITY/COLLEGE SCHOLARSHIP TRUST FUND G.L. c.73 §18; c.74 §42Q; c.75 §32A
+fine_col,G,50% TO GENERAL FUND & 50% TO MUNICIPALITY G.L. c.101 §§ 14&21; c.270 §17; c.271 §5A; c.280 §2
+fine_col,H,50% TO HIGHWAY FUND & 50% TO MUNICIPALITY G.L. c.280 §2
+fine_col,I,20% TO GENERAL FUND & 80% TO MASS. TURNPIKE AUTHORITY G.L. c.81A §4(k); c.280 §2
+fine_col,J,50% TO COUNTY & 50% TO MUNICIPALITY G.L. c.131 §3 [mostly superseded by c. 21 §6I]
+fine_col,K,100% TO INLAND FISHERIES & GAME FUND G.L. c.131 §3 [mostly superseded by c. 21 §6I]
+fine_col,L,50% TO ENVIRONMENTAL LAW ENFORCEMENT FUND & 50% TO MUNICIPALITY G.L. c.70 §16; G.L. c.21 § 6I
+fine_col,M,100% TO HARBORS & INLAND WATERS MAINTENANCE FUND G.L. c.91 §10A½
+fine_col,N,100% TO MASS. TURNPIKE AUTHORITY G.L. c.81A §4(k); c.280 §2
+fine_col,P,100% TO SECURITIES FRAUD PROSECUTION FUND G.L. c.10 §69; c.110A §409
+fine_col,Q,25% TO HIGHWAY FUND & 75% TO MUNICIPALITY G.L. c.90 §3½
+fine_col,R,100% TO OFF-HIGHWAY VEHICLE PROGRAM FUND G.L. c.90B §35
+fine_col,S,75% TO OFF-HIGHWAY VEHICLE PROGRAM FUND & 25% TO MUNICIPALITY G.L. c.90B §35
+fine_col,SS, 75% TO OFF-HIGHWAY VEHICLE PROGRAM FUND & 25% TO GENERAL FUND G.L. c.90B §35
+fine_col,T,100% TO DEPT OF EMPLOYMENT & TRAINING ACCOUNT G.L. c.151A §§47 & 58A
+fine_col,U,100% TO MDC LOCAL ASSESSMENTS ACCOUNT (abolished 7/1/2003) G.L. c.92 §48 (repealed 7/1/2003)
+fine_col,V,100% TO ENVIRONMENTAL LAW ENFORCEMENT FUND G.L. c.21 §6I
+fine_col,W,100% TO NATURAL HERITAGE & ENDANGERED SPECIES FUND G.L. c.10 §35D; c.131A §6
+fine_col,X,50% TO ENVIRONMENTAL LAW ENFORC. FUND & 50% TO D.E.M. CONSERVATION TRUST G.L. c.21 §6I; c.132A §1; c.270 §16
+fine_col,Z,See charging language of individual offense for instructions on division of any fine.
