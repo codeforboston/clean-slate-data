@@ -4,7 +4,7 @@
 2 if the individual is eligible today but has some missing disposition data
 3 if the individual will become eligible in the future and has no missing data
 4 if the individual will become eligible in the future but has some missing disposition data */
-function determineEligibility(allIncidentCode, categories){
+function determineEligibility(allIncidentCode, categories, maxEvents){
   // deep copy of categories is made so changes to categoryList do not affect categories
   let categoryList = [...categories.map(category => [...category])];
   // incidents is an array of strings, each of which is a 6-digit single-incident code taken from the all-incident code
@@ -12,6 +12,11 @@ function determineEligibility(allIncidentCode, categories){
   let eligibleToday = true;
   let missingDispo = false;
   let categoryFound = false;
+
+  // If total max incidents is exceeded, individual is ineligible
+  if(incidents.length > maxEvents){
+    return 0;
+  }
 
   for(let incident of incidents) {
     if(incident[5] === '1'){
@@ -93,7 +98,7 @@ export default async function findAnswer(question, hubSettings){
   const totalIndividuals = answerDf.count();
 
   answerDf = answerDf.generateSeries({
-    Result: row => determineEligibility(row['All Incident Codes'], question.categories)
+    Result: row => determineEligibility(row['All Incident Codes'], question.categories, question.maxEvents)
   });
 
   const eligibleNever = answerDf.where(row => row['Result'] === 0).count();

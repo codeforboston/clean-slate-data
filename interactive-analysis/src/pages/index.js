@@ -14,6 +14,13 @@ export default function Home() {
     </Helmet>
 
     <Typography variant='h4'>Interactive Analysis</Typography>
+    <br />
+    <Typography variant='h6'>TODO</Typography>
+    <Typography>> Decrease information density in question text answers (info will move to table)</Typography>
+    <Typography>> Create system to determine shared values across categories for the question descriptions</Typography>
+    <Typography>> Add alternate results view: table with detailed numbers and percentages</Typography>
+    <Typography>> Add instructions, glossary of terms, and detailed breakdown of assumptions and data limitations</Typography>
+    <br />
 
     <HubsWrapper />
 

@@ -16,3 +16,7 @@ html {
   display: flex;
   flex-wrap: wrap;
 }
+
+.small-textfield {
+  width: 80px;
+}

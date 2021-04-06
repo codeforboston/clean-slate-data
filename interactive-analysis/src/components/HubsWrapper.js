@@ -7,16 +7,19 @@ const defaultQuestions = [
   {
     name: 'Q1',
     maxEvents: 4,
+    //shared: '.1.2',
     categories: [[2, '.1.1'], [2, '.1.0']],
   },
   {
     name: 'Q2',
     maxEvents: 4,
+    //shared: '..02',
     categories: [[2, '..01'], [2, '..00']],
   },
   {
     name: 'Q3',
     maxEvents: 4,
+    //shared: '.2.2',
     categories: [[0, '.0.1'], [4, '....']],
   },
 ];

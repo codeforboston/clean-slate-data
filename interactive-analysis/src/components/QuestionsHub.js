@@ -53,18 +53,20 @@ function getEmptyQuestion(){
     editing: false,
     edits: {},
     loading: false,
-    categories: [],
+    categories: [[1, '....']],
+    //shared: '....',
     answer: 0,
-    maxEvents: '',
+    maxEvents: 1,
   };
   question.edits = getEmptyEdits(question);
   return question;
 }
 
 function getEmptyEdits(question){
+  let categoriesCopy = [...question.categories.map(category => [...category])];
   return {
     name: question.name,
-    categories: question.categories,
+    categories: categoriesCopy,
     maxEvents: question.maxEvents,
   }
 }

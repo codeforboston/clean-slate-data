@@ -35,9 +35,9 @@ const Question = ({ question, question_index, moveQuestion, deleteQuestion, upda
     function getQuestionAnswerDisplay(){
       let unit = hubSettings.descriptionUnit;
       let a = question.answer;
-      if(question.loading || !question.answer){
+      if(question.loading){
         return <div>LOADING</div>
-      } else {
+      } else if(question.answer){
         return <div>
           {
             a.EligibleAnytime.percentOfTotal + '% of ' + unit + ' (' + a.EligibleAnytime.individuals + ')' +' are potentially eligible for expungement. ' +
